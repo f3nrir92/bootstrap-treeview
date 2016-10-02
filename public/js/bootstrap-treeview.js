@@ -116,6 +116,7 @@
 			// Select methods
 			selectNode: $.proxy(this.selectNode, this),
 			unselectNode: $.proxy(this.unselectNode, this),
+			unselectAll: $.proxy(this.unselectAll, this),
 			toggleNodeSelected: $.proxy(this.toggleNodeSelected, this),
 
 			// Expand / collapse methods
@@ -817,6 +818,15 @@
 	Tree.prototype.unselectNode = function (identifiers, options) {
 		this.forEachIdentifier(identifiers, options, $.proxy(function (node, options) {
 			this.setSelectedState(node, false, options);
+		}, this));
+
+		this.render();
+	};
+
+	Tree.prototype.unselectAll = function (options) {
+		var identifiers = this.findNodes('true', 'g', 'state.selected');
+		this.forEachIdentifier(identifiers, options, $.proxy(function (node, options) {
+			this.unselectNode(node, options);
 		}, this));
 
 		this.render();
